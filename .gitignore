@@ -1,0 +1,36 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+
+# ---- Poetry virtualenv (in-project) ----
+.venv/
+
+# ---- Env files / secrets ----
+.env
+.env.*
+*.env
+
+# ---- Test / coverage ----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+
+# ---- Local data (optional, if you don't want to track it) ----
+data/
+tmp/
+logs/

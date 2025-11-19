@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dreamworks"
+version = "0.1.0"
+description = "Collect documents programmatically and generate embeddings using different approaches"
+authors = ["Lorraine Moyo <moyolorraine98@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+sentence-transformers = "^5.1.2"
+arxiv = "^2.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
