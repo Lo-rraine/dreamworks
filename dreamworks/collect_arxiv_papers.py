@@ -42,8 +42,9 @@ def collect_arxiv_papers(category, max_results):
 
     return papers
 
+
 # Define the categories we want to collect from
-categories = [
+CATEGORIES = [
     ('cs.LG', 'Machine Learning'),
     ('cs.CV', 'Computer Vision'),
     ('cs.CL', 'Computational Linguistics'),
@@ -51,19 +52,33 @@ categories = [
     ('cs.SE', 'Software Engineering')
 ]
 
-# Collect all 100 papers from each category
-all_papers = []
-for category_code, category_name in categories:
-    print(f"Collecting papers from {category_name} ({category_code})...")
 
-    papers = collect_arxiv_papers(category_code, 100)
-    all_papers.extend(papers)
-    print(f"\nTotal papers collected: {len(all_papers)}")
+def collect_all_paper_category():
+    # Collect all 100 papers from each category
+    all_papers = []
+    for category_code, category_name in CATEGORIES:
+        print(f"Collecting papers from {category_name} ({category_code})...")
 
-separator = "=" * 80
-print(f"\n{separator}", "SAMPLE PAPERS (one from each category)", f"{separator}", sep="\n")
-for i, (_, category_name) in enumerate(categories):
-    paper = all_papers[i * 100]
-    print(f"\n{category_name}:")
-    print(f"  Title: {paper['title']}")
-    print(f"  Abstract (first 150 chars): {paper['abstract'][:150]}...")
+        papers = collect_arxiv_papers(category_code, 100)
+        all_papers.extend(papers)
+        print(f"\nTotal papers collected: {len(all_papers)}")
+    return all_papers
+
+
+if __name__ == "__main__":
+    # This part only runs if you `python collector.py`
+    all_papers = collect_all_paper_category()
+
+    separator = "=" * 80
+    print(
+        f"\n{separator}",
+        "SAMPLE PAPERS (one from each category)",
+        f"{separator}",
+        sep="\n"
+    )
+
+    for i, (_, category_name) in enumerate(CATEGORIES):
+        paper = all_papers[i * 100]
+        print(f"\n{category_name}:")
+        print(f"  Title: {paper['title']}")
+        print(f"  Abstract (first 150 chars): {paper['abstract'][:150]}...")
