@@ -25,7 +25,7 @@ def clean_papers():
 
     print(f"\nDataset after cleaning: ")
     print(f"Total papers: {len(df)}")
-    print(f"Average abstract length: {df['abstract_length'].mean(): .0f} characters")
+    print(f"Average abstract length: {df['abstract_length'].mean():.0f} characters")
 
     # Show the distribution across categories
     print(f"\nPapers per category: ")
@@ -37,6 +37,8 @@ def clean_papers():
         print(f"\n{idx + 1}. {row['title']}")
         print(f"    Category: {row['category']}")
         print(f"    Abstract length: {row['abstract_length']} characters")
+
+    return df
 
 
 clean_papers()
