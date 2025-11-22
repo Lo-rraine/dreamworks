@@ -1,6 +1,8 @@
 from clients import cohere_api
 from preprocess_arxiv_data import clean_papers
 from sklearn.decomposition import PCA
+from wordcloud import WordCloud, STOPWORDS
+from scipy.cluster.hierarchy import linkage, dendrogram
 import matplotlib.pyplot as plt
 import time
 import numpy as np
@@ -79,6 +81,7 @@ def generate_embedding():
 
 
 def visualise_embeddings():
+    """Use Matplotlib to visualise the overlapping of the different categories"""
     # Reduce embeddings so it's easier to visualise
     df, embeddings_cohere = generate_embedding()
     pca = PCA(n_components=2)
@@ -113,6 +116,61 @@ def visualise_embeddings():
     plt.show()
 
 
+def visualise_embiddings_via_wordcloud():
+    df = clean_papers()
+    text = " ".join(df['abstract'].tolist())
+
+    wc = WordCloud(
+        width=1600,
+        height=900,
+        background_color="white",
+        stopwords=STOPWORDS,
+        max_words=200
+    ).generate(text)
+
+    plt.figure(figsize=(14, 8))
+    plt.imshow(wc, interpolation="bilinear")
+    plt.axis("off")
+    plt.title("Word Cloud – All Abstracts", fontsize=16)
+    plt.tight_layout()
+    plt.show()
+
+
+def visualise_embedding_tree(sample_size=50):
+    df, embeddings_cohere = generate_embedding()
+
+    # Sample a subset so the tree is readable
+    if len(df) > sample_size:
+        df_sample = df.sample(n=sample_size, random_state=42)
+    else:
+        df_sample = df
+
+    # Align embeddings with the sampled rows
+    embeddings_sample = embeddings_cohere[df_sample.index]
+
+    # Use hierarchical clustering (Ward + Euclidean)
+    Z = linkage(embeddings_sample, method='ward', metric='euclidean')
+
+    # Labels: you can use title, or category, or both
+    labels = [
+        f"{row['category']} | {row['title'][:40]}..."
+        for _, row in df_sample.iterrows()
+    ]
+
+    plt.figure(figsize=(16, 6))
+    dendrogram(
+        Z,
+        labels=labels,
+        leaf_rotation=90,
+        leaf_font_size=8,
+        color_threshold=None
+    )
+    plt.title("Hierarchical Clustering Tree of Paper Embeddings", fontsize=14)
+    plt.ylabel("Distance")
+    plt.tight_layout()
+    plt.show()
+
+
 def save_embeddings_to_csv():
     df, embeddings_cohere = generate_embedding()
     df_metadata = df[['title', 'abstract', 'authors', 'published', 'category', 'arxiv_id', 'abstract_length']]
@@ -125,4 +183,4 @@ def save_embeddings_to_csv():
 
 
 if __name__ == "__main__":
-    visualise_embeddings()
+    visualise_embiddings_via_wordcloud()
