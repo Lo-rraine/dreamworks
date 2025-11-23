@@ -183,4 +183,4 @@ def save_embeddings_to_csv():
 
 
 if __name__ == "__main__":
-    visualise_embiddings_via_wordcloud()
+    save_embeddings_to_csv()
